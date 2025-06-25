@@ -36,6 +36,7 @@ const Navbar = () => {
   };
 
   return (
+    // <div className="navbar bg-white shadow-sm">
     <nav className={`relative px-4 py-3 shadow-lg ${
       theme === 'dark' 
         ? 'bg-gray-900 text-white' 
@@ -52,10 +53,10 @@ const Navbar = () => {
         </button>
 
         {/* Logo */}
-        <div className="flex items-center gap-2 text-xl font-bold">
+        {/* <div className="flex items-center gap-2 text-xl font-bold">
           <GiFruitTree size={30} className="text-green-500 bg-white rounded-full p-1" />
           <span>GardenTips</span>
-        </div>
+        </div> */}
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6 font-medium">
