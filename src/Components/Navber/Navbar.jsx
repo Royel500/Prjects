@@ -2,14 +2,14 @@ import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router';
 import { AuthContext } from '../Context/AuthProvider';
 import { GiFruitTree } from "react-icons/gi";
-import { IoMdMoon } from "react-icons/io";
-import { MdOutlineWbSunny } from "react-icons/md";
 import { FiMenu, FiX } from "react-icons/fi";
 import Swal from 'sweetalert2';
-import './Navber.css'
+import './Navber.css';
+import ThemeToggle from '../ThemeToggle';
+import Gardeners from './../Gardeners';
 
 const Navbar = () => {
-  const { user, logOut, theme, toggleTheme } = useContext(AuthContext);
+  const { user, logOut, theme } = useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,8 +36,7 @@ const Navbar = () => {
   };
 
   return (
-    // <div className="navbar bg-white shadow-sm">
-    <nav className={`relative px-4 py-3 shadow-lg ${
+    <nav className={`relative px-2 mx-2 py-3 shadow-lg ${
       theme === 'dark' 
         ? 'bg-gray-900 text-white' 
         : 'bg-gradient-to-r from-blue-400 via-green-500 to-red-300 text-gray-800'
@@ -53,65 +52,45 @@ const Navbar = () => {
         </button>
 
         {/* Logo */}
-        {/* <div className="flex items-center gap-2 text-xl font-bold">
+        <div className="flex items-center gap-2 text-xl font-bold">
           <GiFruitTree size={30} className="text-green-500 bg-white rounded-full p-1" />
           <span>GardenTips</span>
-        </div> */}
+        </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6 font-medium">
           <NavLink 
             to="/" 
-         
+            className={({ isActive }) =>
+              isActive ? 'text-white font-bold' : 'hover:text-white'
+            }
           >
             Home
           </NavLink>
           <NavLink 
-            to="/explore" 
-        
-          >
-            Explore Gardeners
-          </NavLink>
-          <NavLink 
             to="/tips" 
-       
+            className={({ isActive }) =>
+              isActive ? 'text-white font-bold' : 'hover:text-white'
+            }
           >
-            Browse Tips
+            All Gardeners
           </NavLink>
-          {user && (
-            <>
-              <NavLink 
-                to="/plants" 
-                className={({ isActive }) => 
-                  isActive ? 'text-white font-bold' : 'hover:text-white'
-                }
-              >
-                Share Tip
-              </NavLink>
-              <NavLink 
-                to="/my-tips" 
-                className={({ isActive }) => 
-                  isActive ? 'text-white font-bold' : 'hover:text-white'
-                }
-              >
-                My Tips
-              </NavLink>
-            </>
-          )}
+          {/* {user && ( */}
+            <NavLink 
+              to="/dashboard"
+              className={({ isActive }) =>
+                isActive ? 'text-white font-bold' : 'hover:text-white'
+              }
+            >
+              Dashboard
+            </NavLink>
+          {/* )} */}
         </div>
 
         {/* Right Side Controls */}
         <div className="flex items-center gap-4">
           {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className={`px-3 py-1 rounded-full ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
-            }`}
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-          >
-            {theme === 'light' ? <IoMdMoon /> :<MdOutlineWbSunny />}
-          </button>
+          <ThemeToggle />
 
           {/* User Controls */}
           {user ? (
@@ -161,47 +140,35 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className={`md:hidden absolute top-full left-0 right-0 ${
-          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-        } shadow-lg py-2 z-40`}>
-          <NavLink 
-            to="/" 
-            className="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Home
-          </NavLink>
-          <NavLink 
-            to="/explore" 
-            className="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Explore Gardeners
-          </NavLink>
-          <NavLink 
-            to="/tips" 
-            className="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Browse Tips
-          </NavLink>
-          {user && (
-            <>
+          theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
+        } shadow-lg py-3 z-40`}>
+          <div className="flex flex-col space-y-2 px-4">
+            <NavLink 
+              to="/" 
+              onClick={() => setMobileMenuOpen(false)}
+              className={({ isActive }) => isActive ? 'font-bold text-green-500' : ''}
+            >
+              Home
+            </NavLink>
+            <NavLink 
+              to="/tips" 
+              onClick={() => setMobileMenuOpen(false)}
+              className={({ isActive }) => isActive ? 'font-bold text-green-500' : ''}
+            >
+              All Gardeners
+            </NavLink>
+            {/* {user && ( */}
               <NavLink 
-                to="/plants" 
-                className="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700"
+                to="/dashboard"
                 onClick={() => setMobileMenuOpen(false)}
+                className={({ isActive }) => isActive ? 'font-bold text-green-500' : ''}
               >
-                Share Tip
+                Dashboard
               </NavLink>
-              <NavLink 
-                to="/my-tips" 
-                className="block px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                My Tips
-              </NavLink>
-            </>
-          )}
+            {/* )} */}
+          </div>
+
+          {/* Mobile Auth Buttons */}
           {!user ? (
             <div className="px-4 py-3 space-y-2">
               <NavLink 
